@@ -1,3 +1,4 @@
+import type { Movimiento as PrismaMovimiento } from '@prisma/client'
 import { prisma } from '@/lib/db'
 import { calcularBalance } from '@/lib/balance'
 import { BalanceCard } from '@/components/dashboard/BalanceCard'
@@ -14,7 +15,7 @@ export default async function DashboardPage() {
     }),
   ])
 
-  const movimientosFormatted = movimientos.map((m) => ({
+  const movimientosFormatted = movimientos.map((m: PrismaMovimiento) => ({
     id: m.id,
     tipo: m.tipo,
     monto: m.monto.toString(),
