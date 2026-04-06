@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Config {
+  id              Int      @id @default(1)
+  balance_inicial Decimal  @db.Decimal(12, 2)
+  nombre_acreedor String
+  moneda          String   @default("MXN")
+  created_at      DateTime @default(now())
+}
+
+enum TipoMovimiento {
+  RETIRO_PERSONAL
+  RETIRO_NEGOCIO
+  ABONO_PERSONAL
+  ABONO_NEGOCIO
+  FEE_BANCARIO
+  ABONO_INTERES
+  RETIRO_DUENO
+  CREDITO_DUENO
+}
+
+model Movimiento {
+  id         Int            @id @default(autoincrement())
+  tipo       TipoMovimiento
+  monto      Decimal        @db.Decimal(12, 2)
+  fecha      DateTime
+  nota       String?
+  created_at DateTime       @default(now())
+
+  @@index([fecha])
+  @@index([tipo])
+}
