@@ -60,7 +60,7 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
   const moneda = config?.moneda ?? 'MXN'
   const totalPages = Math.ceil(total / limit)
 
-  const movimientosFormatted = movimientos.map((m: import('@prisma/client').Movimiento) => ({
+  const movimientosFormatted = movimientos.map((m: (typeof movimientos)[0]) => ({
     id: m.id,
     tipo: m.tipo,
     monto: m.monto.toString(),
