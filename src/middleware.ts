@@ -29,7 +29,7 @@ async function verify(signed: string, secret: string): Promise<boolean> {
   return crypto.subtle.verify('HMAC', keyMaterial, sigBytes, enc.encode(value))
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isLoginPage = pathname === '/login'
   const isApiAuth = pathname.startsWith('/api/auth')
