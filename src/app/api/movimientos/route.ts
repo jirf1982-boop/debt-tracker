@@ -12,6 +12,7 @@ const TipoMovimientoSchema = z.enum([
   'ABONO_INTERES',
   'RETIRO_DUENO',
   'CREDITO_DUENO',
+  'INTERES_PRESTAMO_100K',
 ])
 
 const CrearMovimientoSchema = z.object({

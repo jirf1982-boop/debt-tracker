@@ -8,7 +8,11 @@
       "Bash(npm create:*)",
       "Bash(npx create-next-app@latest /tmp/debt-tracker-scaffold --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-eslint --use-npm --yes)",
       "Bash(npx prisma:*)",
-      "Bash(node_modules/.bin/prisma --version)"
+      "Bash(node_modules/.bin/prisma --version)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

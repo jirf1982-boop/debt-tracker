@@ -1,7 +1,7 @@
 import { cn, formatCurrency } from '@/lib/utils'
-import { TrendingDown, TrendingUp, DollarSign, Building2 } from 'lucide-react'
+import { TrendingDown, TrendingUp, DollarSign, Building2, User } from 'lucide-react'
 
-type CardType = 'personal' | 'negocio' | 'total' | 'balance'
+type CardType = 'personal' | 'negocio' | 'total' | 'balance' | 'dueno'
 
 interface BalanceCardProps {
   titulo: string
@@ -37,6 +37,11 @@ const CARD_CONFIG: Record<
     icon: TrendingUp,
     colorClass: 'text-[#16A34A]',
     iconBg: 'bg-green-50',
+  },
+  dueno: {
+    icon: User,
+    colorClass: 'text-[#7C3AED]',
+    iconBg: 'bg-purple-50',
   },
 }
 

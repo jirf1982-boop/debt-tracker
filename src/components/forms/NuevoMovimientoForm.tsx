@@ -20,6 +20,7 @@ const schema = z.object({
     'ABONO_INTERES',
     'RETIRO_DUENO',
     'CREDITO_DUENO',
+    'INTERES_PRESTAMO_100K',
   ] as const),
   monto: z
     .string()
@@ -42,6 +43,7 @@ const TIPO_OPTIONS: { value: TipoMovimiento; label: string; group: string }[] = 
   { value: 'ABONO_INTERES', label: TIPO_LABELS.ABONO_INTERES, group: 'Cuenta' },
   { value: 'RETIRO_DUENO', label: TIPO_LABELS.RETIRO_DUENO, group: 'Dueño' },
   { value: 'CREDITO_DUENO', label: TIPO_LABELS.CREDITO_DUENO, group: 'Dueño' },
+  { value: 'INTERES_PRESTAMO_100K', label: TIPO_LABELS.INTERES_PRESTAMO_100K, group: 'Préstamo' },
 ]
 
 export function NuevoMovimientoForm() {
@@ -99,7 +101,7 @@ export function NuevoMovimientoForm() {
             className="w-full px-3 py-2 border border-[#E4E4E7] rounded-lg text-[#09090B] bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors text-sm"
           >
             <option value="">Selecciona un tipo</option>
-            {['Retiros', 'Abonos', 'Cuenta', 'Dueño'].map((group) => (
+            {['Retiros', 'Abonos', 'Cuenta', 'Dueño', 'Préstamo'].map((group) => (
               <optgroup key={group} label={group}>
                 {TIPO_OPTIONS.filter((o) => o.group === group).map((o) => (
                   <option key={o.value} value={o.value}>

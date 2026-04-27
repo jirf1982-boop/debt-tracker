@@ -16,6 +16,7 @@ export async function calcularBalance(): Promise<BalanceData> {
       deuda_total: '0.00',
       nombre_acreedor: 'Sin configurar',
       moneda: 'MXN',
+      total_retiro_dueno: '0.00',
     }
   }
 
@@ -25,6 +26,8 @@ export async function calcularBalance(): Promise<BalanceData> {
   let sumAbonoPersonal = 0
   let sumRetiroNegocio = 0
   let sumAbonoNegocio = 0
+  let sumInterestPrestamo = 0
+  let sumRetiroDueno = 0
 
   for (const m of movimientos) {
     const monto = Number(m.monto)
@@ -43,6 +46,10 @@ export async function calcularBalance(): Promise<BalanceData> {
       case 'CREDITO_DUENO':
         sumPositivos += monto
         break
+      case 'INTERES_PRESTAMO_100K':
+        sumPositivos += monto
+        sumInterestPrestamo += monto
+        break
       case 'RETIRO_PERSONAL':
         sumNegativos += monto
         sumRetiroPersonal += monto
@@ -56,15 +63,16 @@ export async function calcularBalance(): Promise<BalanceData> {
         break
       case 'RETIRO_DUENO':
         sumNegativos += monto
+        sumRetiroDueno += monto
         break
     }
   }
 
   const balanceInicial = Number(config.balance_inicial)
   const balanceCuenta = balanceInicial + sumPositivos - sumNegativos
-  const deudaPersonal = Math.max(0, sumRetiroPersonal - sumAbonoPersonal)
+  const deudaPersonal = Math.max(0, sumRetiroPersonal - sumAbonoPersonal - sumInterestPrestamo)
   const deudaNegocio = Math.max(0, sumRetiroNegocio - sumAbonoNegocio)
-  const deudaTotal = deudaPersonal + deudaNegocio
+  const deudaTotal = Math.max(0, deudaPersonal + deudaNegocio)
 
   return {
     balance_inicial: balanceInicial.toFixed(2),
@@ -74,5 +82,6 @@ export async function calcularBalance(): Promise<BalanceData> {
     deuda_total: deudaTotal.toFixed(2),
     nombre_acreedor: config.nombre_acreedor,
     moneda: config.moneda,
+    total_retiro_dueno: sumRetiroDueno.toFixed(2),
   }
 }

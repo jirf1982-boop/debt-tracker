@@ -38,7 +38,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Balance Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         <BalanceCard
           titulo="Deuda Personal"
           monto={balance.deuda_personal}
@@ -57,11 +57,21 @@ export default async function DashboardPage() {
           moneda={balance.moneda}
           tipo="total"
         />
+      </div>
+
+      {/* Cuenta & Dueño */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <BalanceCard
           titulo="Balance de la Cuenta"
           monto={balance.balance_cuenta}
           moneda={balance.moneda}
           tipo="balance"
+        />
+        <BalanceCard
+          titulo="Total Gastos Dueño"
+          monto={balance.total_retiro_dueno}
+          moneda={balance.moneda}
+          tipo="dueno"
         />
       </div>
 

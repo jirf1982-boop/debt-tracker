@@ -7,6 +7,7 @@ export type TipoMovimiento =
   | 'ABONO_INTERES'
   | 'RETIRO_DUENO'
   | 'CREDITO_DUENO'
+  | 'INTERES_PRESTAMO_100K'
 
 export interface Movimiento {
   id: number
@@ -25,6 +26,7 @@ export interface BalanceData {
   deuda_total: string
   nombre_acreedor: string
   moneda: string
+  total_retiro_dueno: string
 }
 
 export interface MovimientosResponse {
@@ -50,6 +52,7 @@ export const TIPO_LABELS: Record<TipoMovimiento, string> = {
   ABONO_INTERES: 'Abono Interés',
   RETIRO_DUENO: 'Retiro Dueño',
   CREDITO_DUENO: 'Crédito Dueño',
+  INTERES_PRESTAMO_100K: 'Interés Préstamo 100K',
 }
 
 export const TIPOS_NEGATIVOS: TipoMovimiento[] = [
@@ -64,4 +67,5 @@ export const TIPOS_POSITIVOS: TipoMovimiento[] = [
   'ABONO_NEGOCIO',
   'ABONO_INTERES',
   'CREDITO_DUENO',
+  'INTERES_PRESTAMO_100K',
 ]

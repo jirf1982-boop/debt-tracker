@@ -26,6 +26,7 @@ enum TipoMovimiento {
   ABONO_INTERES
   RETIRO_DUENO
   CREDITO_DUENO
+  INTERES_PRESTAMO_100K
 }
 
 model Movimiento {
