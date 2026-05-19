@@ -7,6 +7,7 @@ export const revalidate = 0
 export default async function NinosPage() {
   try {
     console.log('[NinosPage] Starting page render...')
+    console.log('[NinosPage] DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET')
     console.log('[NinosPage] About to call obtenerTodosNinos')
     const ninos = await obtenerTodosNinos()
     console.log('[NinosPage] obtenerTodosNinos returned:', ninos?.length)
@@ -42,8 +43,9 @@ export default async function NinosPage() {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error)
     const errorStack = error instanceof Error ? error.stack : ''
-    console.error('[NinosPage] Error caught:', errorMsg)
+    console.error('[NinosPage] FATAL ERROR:', errorMsg)
     console.error('[NinosPage] Stack:', errorStack)
-    notFound()
+    console.error('[NinosPage] Full error object:', JSON.stringify(error))
+    throw error
   }
 }
