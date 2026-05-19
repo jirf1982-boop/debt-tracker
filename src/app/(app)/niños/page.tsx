@@ -1,6 +1,8 @@
 import { obtenerTodosNinos } from '@/lib/balance-nino'
 import { NinosListView } from '@/components/niños/NinosListView'
 
+export const dynamic = 'force-dynamic'
+
 export default async function NinosPage() {
   const ninos = await obtenerTodosNinos()
 

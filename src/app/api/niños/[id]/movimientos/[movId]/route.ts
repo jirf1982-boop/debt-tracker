@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/db'
 import { calcularBalanceNino } from '@/lib/balance-nino'
 import { NextRequest, NextResponse } from 'next/server'
 

@@ -96,13 +96,13 @@ export function NuevoMovimientoNinoForm({
             {...register('tipo')}
             className="w-full px-3 py-2 border border-[#E4E4E7] rounded-lg text-sm text-[#09090B] bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
           >
-            {(
-              Object.entries(TIPO_MOVIMIENTO_NINO_LABELS) as const
-            ).map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
+            {Object.entries(TIPO_MOVIMIENTO_NINO_LABELS).map(
+              ([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              )
+            )}
           </select>
           {errors.tipo && (
             <p className="text-xs text-[#EF4444] mt-1">

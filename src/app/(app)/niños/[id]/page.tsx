@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/db'
 import { calcularBalanceNino } from '@/lib/balance-nino'
 import { NinoDetailView } from '@/components/niños/NinoDetailView'
 import { notFound } from 'next/navigation'
@@ -30,6 +30,12 @@ export default async function NinoDetailPage({ params }: PageProps) {
     }
 
     const balance = await calcularBalanceNino(ninoId)
+    const ninoData = {
+      ...nino,
+      deuda_inicial: nino.deuda_inicial.toString(),
+      created_at: nino.created_at.toISOString(),
+      updated_at: nino.updated_at.toISOString(),
+    }
 
     return (
       <main className="flex-1 overflow-auto">
@@ -42,9 +48,14 @@ export default async function NinoDetailPage({ params }: PageProps) {
           </div>
 
           <NinoDetailView
-            nino={nino}
+            nino={ninoData}
             balance={balance}
-            movimientos={nino.movimientos}
+            movimientos={nino.movimientos.map((m) => ({
+              ...m,
+              monto: m.monto.toString(),
+              fecha: m.fecha.toISOString(),
+              created_at: m.created_at.toISOString(),
+            }))}
           />
         </div>
       </main>

@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/db'
 import { BalanceNino, TipoMovimientoNino } from '@/types'
 import { Decimal } from '@prisma/client/runtime/library'
 
