@@ -34,8 +34,9 @@ export async function middleware(request: NextRequest) {
   console.log('[middleware] Checking pathname:', pathname)
   const isLoginPage = pathname === '/login'
   const isApiAuth = pathname.startsWith('/api/auth')
+  const isHealthCheck = pathname === '/api/health'
 
-  if (isApiAuth) return NextResponse.next()
+  if (isApiAuth || isHealthCheck) return NextResponse.next()
 
   const sessionCookie = request.cookies.get(SESSION_COOKIE)
   const secret = process.env.COOKIE_SECRET ?? 'fallback-secret-change-me'
