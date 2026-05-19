@@ -3,15 +3,11 @@ import { prisma } from '@/lib/db'
 
 export async function GET() {
   try {
-    const result = await prisma.$queryRaw`SELECT 1`
+    await prisma.$connect()
     return NextResponse.json({
       status: 'ok',
       db: 'connected',
       timestamp: new Date().toISOString(),
-      env: {
-        database: process.env.DATABASE_URL ? 'SET' : 'NOT_SET',
-        nodeEnv: process.env.NODE_ENV,
-      },
     })
   } catch (error) {
     console.error('[health] DB Error:', error)
