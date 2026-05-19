@@ -3,6 +3,7 @@ import { BalanceNino, TipoMovimientoNino } from '@/types'
 import { Decimal } from '@prisma/client/runtime/library'
 
 export async function calcularBalanceNino(ninoId: number): Promise<BalanceNino> {
+  console.log('[calcularBalanceNino] Starting for ninoId:', ninoId)
   const nino = await prisma.nino.findUnique({
     where: { id: ninoId },
     include: { movimientos: true },
@@ -46,8 +47,24 @@ export async function calcularBalanceNino(ninoId: number): Promise<BalanceNino> 
 }
 
 export async function obtenerTodosNinos(): Promise<BalanceNino[]> {
-  const ninos = await prisma.nino.findMany({
-    orderBy: { nombre: 'asc' },
-  })
-  return Promise.all(ninos.map((n) => calcularBalanceNino(n.id)))
+  console.log('[obtenerTodosNinos] FUNCTION START')
+  try {
+    console.log('[obtenerTodosNinos] Querying all ninos...')
+    const ninos = await prisma.nino.findMany({
+      orderBy: { nombre: 'asc' },
+    })
+    console.log('[obtenerTodosNinos] Found', ninos.length, 'ninos')
+
+    const balances = await Promise.all(
+      ninos.map(async (n) => {
+        console.log('[obtenerTodosNinos] Calculating balance for', n.nombre, '(id:', n.id, ')')
+        return calcularBalanceNino(n.id)
+      })
+    )
+    console.log('[obtenerTodosNinos] Calculated all balances')
+    return balances
+  } catch (error) {
+    console.error('[obtenerTodosNinos] Caught error:', error instanceof Error ? error.message : error)
+    throw error
+  }
 }

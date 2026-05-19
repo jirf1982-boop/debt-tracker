@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db'
 import { calcularBalanceNino } from '@/lib/balance-nino'
-import { NinoDetailView } from '@/components/niños/NinoDetailView'
+import { NinoDetailView } from '@/components/ninos/NinoDetailView'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
@@ -31,10 +31,20 @@ export default async function NinoDetailPage({ params }: PageProps) {
 
     const balance = await calcularBalanceNino(ninoId)
     const ninoData = {
-      ...nino,
+      id: nino.id,
+      nombre: nino.nombre,
       deuda_inicial: nino.deuda_inicial.toString(),
       created_at: nino.created_at.toISOString(),
       updated_at: nino.updated_at.toISOString(),
+      movimientos: nino.movimientos.map((m) => ({
+        id: m.id,
+        ninoId: m.ninoId,
+        tipo: m.tipo,
+        monto: m.monto.toString(),
+        fecha: m.fecha.toISOString(),
+        nota: m.nota,
+        created_at: m.created_at.toISOString(),
+      })),
     }
 
     return (
@@ -50,12 +60,7 @@ export default async function NinoDetailPage({ params }: PageProps) {
           <NinoDetailView
             nino={ninoData}
             balance={balance}
-            movimientos={nino.movimientos.map((m) => ({
-              ...m,
-              monto: m.monto.toString(),
-              fecha: m.fecha.toISOString(),
-              created_at: m.created_at.toISOString(),
-            }))}
+            movimientos={ninoData.movimientos}
           />
         </div>
       </main>

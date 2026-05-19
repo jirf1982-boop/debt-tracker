@@ -11,7 +11,7 @@ const navItems = [
   { href: '/movimientos', label: 'Historial', icon: List },
   { href: '/nuevo', label: 'Nuevo Movimiento', icon: PlusCircle },
   { href: '/prestamo', label: 'Préstamo 100K', icon: Percent },
-  { href: '/niños', label: 'Mis Hijos', icon: Users },
+  { href: '/ninos', label: 'Mis Hijos', icon: Users },
   { href: '/configuracion', label: 'Configuración', icon: Settings },
 ]
 

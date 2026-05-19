@@ -52,8 +52,9 @@ export function NuevoMovimientoNinoForm({
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch(`/api/niños/${ninoId}/movimientos`, {
+        const response = await fetch(`/api/ninos/${ninoId}/movimientos`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             tipo: data.tipo,

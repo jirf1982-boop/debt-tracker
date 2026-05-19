@@ -20,7 +20,7 @@ export function NinoCard({ nino }: NinoCardProps) {
   }
 
   return (
-    <Link href={`/niños/${nino.ninoId}`}>
+    <Link href={`/ninos/${nino.ninoId}`}>
       <div className="block h-full bg-white rounded-lg border border-[#E4E4E7] p-5 hover:shadow-md hover:border-[#2563EB] transition-all cursor-pointer group">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">

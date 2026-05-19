@@ -1,0 +1,36 @@
+
+> debt-tracker@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.2 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.204:3000
+- Environments: .env.local
+✓ Ready in 2.2s
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+[middleware] Checking pathname: /ninos
+[middleware] isAuthenticated: false isLoginPage: false
+[middleware] Redirecting to /login
+[middleware] Checking pathname: /ni%C3%B1os
+[middleware] isAuthenticated: true isLoginPage: false
+[middleware] Allowing through
+[middleware] Checking pathname: /manifest.json
+[middleware] isAuthenticated: false isLoginPage: false
+[middleware] Redirecting to /login
+[middleware] Checking pathname: /login
+[middleware] isAuthenticated: false isLoginPage: true
+[middleware] Allowing through
+ GET /ni%C3%B1os 404 in 1903ms (next.js: 763ms, proxy.ts: 88ms, application-code: 1052ms)
+ GET /login 200 in 911ms (next.js: 208ms, proxy.ts: 40ms, application-code: 663ms)
+[middleware] Checking pathname: /manifest.json
+[middleware] isAuthenticated: false isLoginPage: false
+[middleware] Redirecting to /login
+[middleware] Checking pathname: /icon.svg
+[middleware] Checking pathname: /login
+[middleware] isAuthenticated: false isLoginPage: true
+[middleware] Allowing through
+[middleware] isAuthenticated: true isLoginPage: false
+[middleware] Allowing through
+ GET /login 200 in 277ms (next.js: 49ms, proxy.ts: 36ms, application-code: 192ms)
+[?25h

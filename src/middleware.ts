@@ -31,6 +31,7 @@ async function verify(signed: string, secret: string): Promise<boolean> {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  console.log('[middleware] Checking pathname:', pathname)
   const isLoginPage = pathname === '/login'
   const isApiAuth = pathname.startsWith('/api/auth')
 
@@ -42,14 +43,19 @@ export async function middleware(request: NextRequest) {
     ? await verify(sessionCookie.value, secret)
     : false
 
+  console.log('[middleware] isAuthenticated:', isAuthenticated, 'isLoginPage:', isLoginPage)
+
   if (!isAuthenticated && !isLoginPage) {
+    console.log('[middleware] Redirecting to /login')
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
   if (isAuthenticated && isLoginPage) {
+    console.log('[middleware] Redirecting to /dashboard')
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
+  console.log('[middleware] Allowing through')
   return NextResponse.next()
 }
 
