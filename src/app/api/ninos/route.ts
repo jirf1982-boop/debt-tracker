@@ -16,3 +16,4 @@ export async function GET() {
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })
   }
 }
+// Force redeploy
