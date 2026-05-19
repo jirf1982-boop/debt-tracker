@@ -69,3 +69,40 @@ export const TIPOS_POSITIVOS: TipoMovimiento[] = [
   'CREDITO_DUENO',
   'INTERES_PRESTAMO_100K',
 ]
+
+// Niños (Children) Debt Tracking
+export type TipoMovimientoNino = 'PAGO_PADRE' | 'RETIRO_NINO' | 'REGALO_DINERO'
+
+export interface Nino {
+  id: number
+  nombre: string
+  deuda_inicial: string
+  created_at: string
+  updated_at: string
+}
+
+export interface MovimientoNino {
+  id: number
+  ninoId: number
+  tipo: TipoMovimientoNino
+  monto: string
+  fecha: string
+  nota: string | null
+  created_at: string
+}
+
+export interface BalanceNino {
+  ninoId: number
+  nombre: string
+  deuda_inicial: string
+  pagos_padre: string
+  retiros_nino: string
+  regalos: string
+  deuda_actual: string
+}
+
+export const TIPO_MOVIMIENTO_NINO_LABELS: Record<TipoMovimientoNino, string> = {
+  PAGO_PADRE: 'Pago del Padre',
+  RETIRO_NINO: 'Retiro del Niño',
+  REGALO_DINERO: 'Regalo/Dinero Adicional',
+}
