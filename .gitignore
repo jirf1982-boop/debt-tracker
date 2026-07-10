@@ -43,3 +43,6 @@ next-env.d.ts
 # local only
 .vercelenv
 server.log
+
+# respaldos con datos reales - nunca commitear
+backups/
