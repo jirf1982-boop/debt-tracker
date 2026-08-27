@@ -47,6 +47,10 @@ const TIPO_OPTIONS: { value: TipoMovimiento; label: string; group: string }[] = 
   { value: 'INTERES_PRESTAMO_100K', label: TIPO_LABELS.INTERES_PRESTAMO_100K, group: 'Préstamo' },
 ]
 
+// Derivado de TIPO_OPTIONS a propósito: si se escribe a mano, un grupo
+// renombrado deja su encabezado vacío y las opciones desaparecen del select.
+const GRUPOS = [...new Set(TIPO_OPTIONS.map((o) => o.group))]
+
 export function NuevoMovimientoForm({ titulares = [] }: { titulares?: BalanceTitular[] }) {
   const router = useRouter()
   const {
@@ -108,7 +112,7 @@ export function NuevoMovimientoForm({ titulares = [] }: { titulares?: BalanceTit
             className="w-full px-3 py-2 border border-[#E4E4E7] rounded-lg text-[#09090B] bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors text-sm"
           >
             <option value="">Selecciona un tipo</option>
-            {['Retiros', 'Abonos', 'Cuenta', 'Dueño', 'Préstamo'].map((group) => (
+            {GRUPOS.map((group) => (
               <optgroup key={group} label={group}>
                 {TIPO_OPTIONS.filter((o) => o.group === group).map((o) => (
                   <option key={o.value} value={o.value}>

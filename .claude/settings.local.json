@@ -12,7 +12,14 @@
       "Bash(npm run *)",
       "Bash(npx tsc *)",
       "Bash(node_modules/.bin/tsc --noEmit)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s https://debt-tracker-inky.vercel.app/api/health)",
+      "Bash(curl -s -o /dev/null -w \"  /titulares:     %{http_code}\\\\n\" https://debt-tracker-inky.vercel.app/titulares)",
+      "Bash(curl -s -o /dev/null -w \"  /api/titulares: %{http_code}\\\\n\" https://debt-tracker-inky.vercel.app/api/titulares)",
+      "Bash(NODE_PATH=/Users/julie/Downloads/Proyectos_Codigo/debt-tracker/node_modules node -e ' *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Arreglar select de tipos: grupo '\\\\''Titulares'\\\\'' no se dibujaba *)",
+      "Bash(git push *)"
     ]
   }
 }
