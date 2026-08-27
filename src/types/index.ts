@@ -16,6 +16,8 @@ export interface Movimiento {
   fecha: string
   nota: string | null
   created_at: string
+  titularId: number | null
+  titular_nombre?: string | null
 }
 
 export interface BalanceData {
@@ -50,8 +52,8 @@ export const TIPO_LABELS: Record<TipoMovimiento, string> = {
   ABONO_NEGOCIO: 'Abono Negocio',
   FEE_BANCARIO: 'Fee Bancario',
   ABONO_INTERES: 'Abono Interés',
-  RETIRO_DUENO: 'Retiro Dueño',
-  CREDITO_DUENO: 'Crédito Dueño',
+  RETIRO_DUENO: 'Retiro de titular',
+  CREDITO_DUENO: 'Depósito de titular',
   INTERES_PRESTAMO_100K: 'Interés Préstamo 100K',
 }
 
@@ -69,6 +71,27 @@ export const TIPOS_POSITIVOS: TipoMovimiento[] = [
   'CREDITO_DUENO',
   'INTERES_PRESTAMO_100K',
 ]
+
+// Titulares — personas dueñas de una parte del dinero de la cuenta
+export interface Titular {
+  id: number
+  nombre: string
+  monto_inicial: string
+  created_at: string
+  updated_at: string
+}
+
+export interface BalanceTitular {
+  titularId: number
+  nombre: string
+  monto_inicial: string
+  total_retirado: string
+  total_depositado: string
+  disponible: string
+}
+
+/** Tipos de movimiento que pueden atribuirse a un titular. */
+export const TIPOS_DE_TITULAR: TipoMovimiento[] = ['RETIRO_DUENO', 'CREDITO_DUENO']
 
 // Niños (Children) Debt Tracking
 export type TipoMovimientoNino = 'PAGO_PADRE' | 'RETIRO_NINO' | 'REGALO_DINERO'

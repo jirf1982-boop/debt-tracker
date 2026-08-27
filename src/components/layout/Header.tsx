@@ -7,6 +7,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/movimientos': 'Historial de Movimientos',
   '/nuevo': 'Nuevo Movimiento',
+  '/titulares': 'Titulares',
   '/configuracion': 'Configuración',
 }
 

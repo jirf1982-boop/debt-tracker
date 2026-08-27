@@ -17,6 +17,7 @@ const VALID_TIPOS = new Set([
   'ABONO_INTERES',
   'RETIRO_DUENO',
   'CREDITO_DUENO',
+  'INTERES_PRESTAMO_100K',
 ])
 
 interface PageProps {
@@ -52,6 +53,7 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
       orderBy: [{ fecha: 'desc' }, { created_at: 'desc' }],
       skip: (page - 1) * limit,
       take: limit,
+      include: { titular: { select: { nombre: true } } },
     }),
     prisma.movimiento.count({ where }),
     prisma.config.findFirst(),
@@ -67,6 +69,8 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
     fecha: m.fecha.toISOString(),
     nota: m.nota,
     created_at: m.created_at.toISOString(),
+    titularId: m.titularId,
+    titular_nombre: m.titular?.nombre ?? null,
   }))
 
   function buildPageUrl(p: number) {

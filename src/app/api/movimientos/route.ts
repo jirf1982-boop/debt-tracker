@@ -15,12 +15,18 @@ const TipoMovimientoSchema = z.enum([
   'INTERES_PRESTAMO_100K',
 ])
 
-const CrearMovimientoSchema = z.object({
-  tipo: TipoMovimientoSchema,
-  monto: z.number().positive('El monto debe ser positivo'),
-  fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida — use YYYY-MM-DD'),
-  nota: z.string().max(200, 'La nota no puede superar 200 caracteres').optional(),
-})
+const CrearMovimientoSchema = z
+  .object({
+    tipo: TipoMovimientoSchema,
+    monto: z.number().positive('El monto debe ser positivo'),
+    fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida — use YYYY-MM-DD'),
+    nota: z.string().max(200, 'La nota no puede superar 200 caracteres').optional(),
+    titularId: z.number().int().positive().optional(),
+  })
+  .refine(
+    (d) => d.titularId === undefined || d.tipo === 'RETIRO_DUENO' || d.tipo === 'CREDITO_DUENO',
+    { message: 'Solo los movimientos de titular pueden asignarse a una persona', path: ['titularId'] }
+  )
 
 export async function GET(request: Request) {
   const isAuth = await getSession()
@@ -54,6 +60,7 @@ export async function GET(request: Request) {
       orderBy: [{ fecha: 'desc' }, { created_at: 'desc' }],
       skip: (page - 1) * limit,
       take: limit,
+      include: { titular: { select: { nombre: true } } },
     }),
     prisma.movimiento.count({ where }),
   ])
@@ -66,6 +73,8 @@ export async function GET(request: Request) {
       fecha: m.fecha.toISOString(),
       nota: m.nota,
       created_at: m.created_at.toISOString(),
+      titularId: m.titularId,
+      titular_nombre: m.titular?.nombre ?? null,
     })),
     total,
     page,
@@ -90,7 +99,14 @@ export async function POST(request: Request) {
       )
     }
 
-    const { tipo, monto, fecha, nota } = parsed.data
+    const { tipo, monto, fecha, nota, titularId } = parsed.data
+
+    if (titularId !== undefined) {
+      const existe = await prisma.titular.findUnique({ where: { id: titularId } })
+      if (!existe) {
+        return NextResponse.json({ error: 'Titular no encontrado' }, { status: 404 })
+      }
+    }
 
     const movimiento = await prisma.movimiento.create({
       data: {
@@ -98,6 +114,7 @@ export async function POST(request: Request) {
         monto,
         fecha: new Date(`${fecha}T12:00:00`),
         nota: nota ?? null,
+        titularId: titularId ?? null,
       },
     })
 
@@ -109,6 +126,7 @@ export async function POST(request: Request) {
         fecha: movimiento.fecha.toISOString(),
         nota: movimiento.nota,
         created_at: movimiento.created_at.toISOString(),
+        titularId: movimiento.titularId,
       },
       { status: 201 }
     )

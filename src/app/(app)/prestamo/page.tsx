@@ -22,6 +22,7 @@ export default async function PrestamoPage() {
     fecha: m.fecha.toISOString(),
     nota: m.nota,
     created_at: m.created_at.toISOString(),
+    titularId: m.titularId,
   }))
 
   return (

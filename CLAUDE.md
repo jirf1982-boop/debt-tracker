@@ -67,6 +67,13 @@ Client Components: react-hook-form + Zod, POST al API, `router.refresh()`.
 - `Config` — balance_inicial, nombre_acreedor, moneda
 - `Movimiento` — tipo (enum TipoMovimiento, 9 valores), monto Decimal, fecha, nota
 - `Nino` / `MovimientoNino` — tipo (PAGO_PADRE, RETIRO_NINO, REGALO_DINERO)
+- `Titular` — personas dueñas de una parte del dinero de la cuenta (mamá,
+  hermanos): nombre, monto_inicial. `Movimiento.titularId` es opcional y solo
+  aplica a RETIRO_DUENO / CREDITO_DUENO. Un retiro de titular baja el balance
+  de la cuenta Y se descuenta de esa persona con un solo registro; nunca toca
+  la deuda de Julie. Saldo en `lib/balance-titular.ts` (usa Decimal).
+  Deliberadamente NO se agregaron valores al enum TipoMovimiento: con dos
+  hermanos, un `RETIRO_HERMANO` no distinguiría quién sacó qué.
 
 ```
 enum TipoMovimiento {

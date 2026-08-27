@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, List, PlusCircle, Settings, LogOut, TrendingDown, Percent, Users } from 'lucide-react'
+import { LayoutDashboard, List, PlusCircle, Settings, LogOut, TrendingDown, Percent, Users, Wallet } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -12,6 +12,7 @@ const navItems = [
   { href: '/nuevo', label: 'Nuevo Movimiento', icon: PlusCircle },
   { href: '/prestamo', label: 'Préstamo 100K', icon: Percent },
   { href: '/ninos', label: 'Mis Hijos', icon: Users },
+  { href: '/titulares', label: 'Titulares', icon: Wallet },
   { href: '/configuracion', label: 'Configuración', icon: Settings },
 ]
 

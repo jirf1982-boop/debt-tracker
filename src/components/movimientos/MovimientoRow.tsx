@@ -60,6 +60,9 @@ export function MovimientoRow({ movimiento: m, moneda }: MovimientoRowProps) {
         >
           {TIPO_LABELS[m.tipo]}
         </span>
+        {m.titular_nombre && (
+          <span className="ml-1.5 text-xs text-[#71717A]">{m.titular_nombre}</span>
+        )}
       </td>
       <td className="px-4 py-3 text-right">
         <span

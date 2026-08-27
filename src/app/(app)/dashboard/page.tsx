@@ -11,6 +11,7 @@ export default async function DashboardPage() {
     prisma.movimiento.findMany({
       orderBy: [{ fecha: 'desc' }, { created_at: 'desc' }],
       take: 5,
+      include: { titular: { select: { nombre: true } } },
     }),
   ])
 
@@ -21,6 +22,8 @@ export default async function DashboardPage() {
     fecha: m.fecha.toISOString(),
     nota: m.nota,
     created_at: m.created_at.toISOString(),
+    titularId: m.titularId,
+    titular_nombre: m.titular?.nombre ?? null,
   }))
 
   return (

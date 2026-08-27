@@ -1,12 +1,17 @@
 import { NuevoMovimientoForm } from '@/components/forms/NuevoMovimientoForm'
+import { obtenerTodosTitulares } from '@/lib/balance-titular'
 
-export default function NuevoPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function NuevoPage() {
+  const titulares = await obtenerTodosTitulares()
+
   return (
     <div className="space-y-4">
       <p className="text-sm text-[#71717A]">
         Registra un nuevo movimiento. El balance se actualizará automáticamente.
       </p>
-      <NuevoMovimientoForm />
+      <NuevoMovimientoForm titulares={titulares} />
     </div>
   )
 }

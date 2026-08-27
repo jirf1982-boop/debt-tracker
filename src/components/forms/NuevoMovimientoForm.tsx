@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import { TIPO_LABELS } from '@/types'
-import type { TipoMovimiento } from '@/types'
-import { formatDateInput } from '@/lib/utils'
+import type { TipoMovimiento, BalanceTitular } from '@/types'
+import { formatDateInput, formatCurrency } from '@/lib/utils'
 
 const schema = z.object({
   tipo: z.enum([
@@ -30,6 +30,7 @@ const schema = z.object({
     }),
   fecha: z.string().min(1, 'Selecciona una fecha'),
   nota: z.string().max(200, 'Máximo 200 caracteres').optional(),
+  titularId: z.string().optional(),
 })
 
 type FormData = z.infer<typeof schema>
@@ -41,17 +42,18 @@ const TIPO_OPTIONS: { value: TipoMovimiento; label: string; group: string }[] = 
   { value: 'ABONO_NEGOCIO', label: TIPO_LABELS.ABONO_NEGOCIO, group: 'Abonos' },
   { value: 'FEE_BANCARIO', label: TIPO_LABELS.FEE_BANCARIO, group: 'Cuenta' },
   { value: 'ABONO_INTERES', label: TIPO_LABELS.ABONO_INTERES, group: 'Cuenta' },
-  { value: 'RETIRO_DUENO', label: TIPO_LABELS.RETIRO_DUENO, group: 'Dueño' },
-  { value: 'CREDITO_DUENO', label: TIPO_LABELS.CREDITO_DUENO, group: 'Dueño' },
+  { value: 'RETIRO_DUENO', label: TIPO_LABELS.RETIRO_DUENO, group: 'Titulares' },
+  { value: 'CREDITO_DUENO', label: TIPO_LABELS.CREDITO_DUENO, group: 'Titulares' },
   { value: 'INTERES_PRESTAMO_100K', label: TIPO_LABELS.INTERES_PRESTAMO_100K, group: 'Préstamo' },
 ]
 
-export function NuevoMovimientoForm() {
+export function NuevoMovimientoForm({ titulares = [] }: { titulares?: BalanceTitular[] }) {
   const router = useRouter()
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -59,6 +61,9 @@ export function NuevoMovimientoForm() {
       fecha: formatDateInput(new Date()),
     },
   })
+
+  const tipoActual = watch('tipo')
+  const esDeTitular = tipoActual === 'RETIRO_DUENO' || tipoActual === 'CREDITO_DUENO'
 
   async function onSubmit(data: FormData) {
     try {
@@ -70,6 +75,8 @@ export function NuevoMovimientoForm() {
           monto: parseFloat(data.monto),
           fecha: data.fecha,
           nota: data.nota || undefined,
+          titularId:
+            esDeTitular && data.titularId ? parseInt(data.titularId, 10) : undefined,
         }),
       })
 
@@ -115,6 +122,34 @@ export function NuevoMovimientoForm() {
             <p className="text-xs text-[#DC2626] mt-1">{errors.tipo.message}</p>
           )}
         </div>
+
+        {/* Titular — solo para movimientos de titular */}
+        {esDeTitular && (
+          <div>
+            <label className="block text-sm font-medium text-[#09090B] mb-1.5">
+              ¿De quién es este dinero?{' '}
+              <span className="text-[#71717A] font-normal">(opcional)</span>
+            </label>
+            {titulares.length === 0 ? (
+              <p className="text-xs text-[#71717A] border border-dashed border-[#E4E4E7] rounded-lg px-3 py-2.5">
+                Aún no has registrado personas. Ve a <strong>Titulares</strong> para
+                agregar a tu mamá y a tus hermanos.
+              </p>
+            ) : (
+              <select
+                {...register('titularId')}
+                className="w-full px-3 py-2 border border-[#E4E4E7] rounded-lg text-[#09090B] bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors text-sm"
+              >
+                <option value="">Sin asignar</option>
+                {titulares.map((t) => (
+                  <option key={t.titularId} value={String(t.titularId)}>
+                    {t.nombre} — disponible {formatCurrency(t.disponible)}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        )}
 
         {/* Monto */}
         <div>

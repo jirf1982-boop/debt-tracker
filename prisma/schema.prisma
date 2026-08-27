@@ -35,9 +35,25 @@ model Movimiento {
   fecha      DateTime
   nota       String?
   created_at DateTime       @default(now())
+  titularId  Int?
+  titular    Titular?       @relation(fields: [titularId], references: [id], onDelete: SetNull)
 
   @@index([fecha])
   @@index([tipo])
+  @@index([titularId])
+}
+
+/// Personas dueñas de una parte del dinero de la cuenta (mamá, hermanos).
+/// Sus retiros SÍ bajan el balance de la cuenta y no afectan la deuda de Julie.
+model Titular {
+  id            Int          @id @default(autoincrement())
+  nombre        String
+  monto_inicial Decimal      @db.Decimal(12, 2)
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  movimientos   Movimiento[]
+
+  @@index([nombre])
 }
 
 enum TipoMovimientoNino {
