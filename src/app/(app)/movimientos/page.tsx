@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { MovimientosTable } from '@/components/movimientos/MovimientosTable'
 import { FiltroBar } from '@/components/movimientos/FiltroBar'
 import { PlusCircle, ChevronLeft, ChevronRight } from 'lucide-react'
+import { obtenerTodosTitulares } from '@/lib/balance-titular'
 import type { TipoMovimiento } from '@/types'
 
 export const dynamic = 'force-dynamic'
@@ -47,7 +48,7 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
     }
   }
 
-  const [movimientos, total, config] = await Promise.all([
+  const [movimientos, total, config, titulares] = await Promise.all([
     prisma.movimiento.findMany({
       where,
       orderBy: [{ fecha: 'desc' }, { created_at: 'desc' }],
@@ -57,6 +58,7 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
     }),
     prisma.movimiento.count({ where }),
     prisma.config.findFirst(),
+    obtenerTodosTitulares(),
   ])
 
   const moneda = config?.moneda ?? 'MXN'
@@ -101,7 +103,11 @@ export default async function MovimientosPage({ searchParams }: PageProps) {
         <FiltroBar />
       </Suspense>
 
-      <MovimientosTable movimientos={movimientosFormatted} moneda={moneda} />
+      <MovimientosTable
+        movimientos={movimientosFormatted}
+        moneda={moneda}
+        titulares={titulares}
+      />
 
       {/* Paginación */}
       {totalPages > 1 && (

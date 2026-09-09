@@ -1,12 +1,13 @@
 import { MovimientoRow } from './MovimientoRow'
-import type { Movimiento } from '@/types'
+import type { Movimiento, BalanceTitular } from '@/types'
 
 interface MovimientosTableProps {
   movimientos: Movimiento[]
   moneda: string
+  titulares: BalanceTitular[]
 }
 
-export function MovimientosTable({ movimientos, moneda }: MovimientosTableProps) {
+export function MovimientosTable({ movimientos, moneda, titulares }: MovimientosTableProps) {
   if (movimientos.length === 0) {
     return (
       <div className="bg-white border border-[#E4E4E7] rounded-xl shadow-sm">
@@ -42,7 +43,7 @@ export function MovimientosTable({ movimientos, moneda }: MovimientosTableProps)
           </thead>
           <tbody>
             {movimientos.map((m) => (
-              <MovimientoRow key={m.id} movimiento={m} moneda={moneda} />
+              <MovimientoRow key={m.id} movimiento={m} moneda={moneda} titulares={titulares} />
             ))}
           </tbody>
         </table>

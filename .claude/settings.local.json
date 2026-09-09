@@ -19,7 +19,10 @@
       "Bash(NODE_PATH=/Users/julie/Downloads/Proyectos_Codigo/debt-tracker/node_modules node -e ' *)",
       "Bash(git add *)",
       "Bash(git commit -q -m 'Arreglar select de tipos: grupo '\\\\''Titulares'\\\\'' no se dibujaba *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(curl -s https://debt-tracker-inky.vercel.app/nuevo -o /dev/null -w \"%{http_code}\")",
+      "Bash(python3 -)",
+      "Bash(git commit -q -m 'Editar movimientos desde el historial *)"
     ]
   }
 }

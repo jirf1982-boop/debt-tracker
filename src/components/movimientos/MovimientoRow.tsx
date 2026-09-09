@@ -3,20 +3,23 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Trash2, Loader2 } from 'lucide-react'
+import { Trash2, Loader2, Pencil } from 'lucide-react'
 import { formatCurrency, formatDate, cn } from '@/lib/utils'
 import { TIPO_LABELS, TIPOS_NEGATIVOS } from '@/types'
-import type { Movimiento } from '@/types'
+import type { Movimiento, BalanceTitular } from '@/types'
+import { EditarMovimientoDialog } from './EditarMovimientoDialog'
 
 interface MovimientoRowProps {
   movimiento: Movimiento
   moneda: string
+  titulares: BalanceTitular[]
 }
 
-export function MovimientoRow({ movimiento: m, moneda }: MovimientoRowProps) {
+export function MovimientoRow({ movimiento: m, moneda, titulares }: MovimientoRowProps) {
   const router = useRouter()
   const [deleting, setDeleting] = useState(false)
   const [confirm, setConfirm] = useState(false)
+  const [editando, setEditando] = useState(false)
 
   const isNegativo = TIPOS_NEGATIVOS.includes(m.tipo)
 
@@ -77,7 +80,22 @@ export function MovimientoRow({ movimiento: m, moneda }: MovimientoRowProps) {
       <td className="px-4 py-3 text-sm text-[#71717A] max-w-[200px] truncate">
         {m.nota ?? <span className="text-zinc-300">—</span>}
       </td>
-      <td className="px-4 py-3 text-right">
+      <td className="px-4 py-3 text-right whitespace-nowrap">
+        <button
+          onClick={() => setEditando(true)}
+          title="Editar"
+          className="p-1.5 rounded-lg text-[#71717A] hover:text-[#2563EB] hover:bg-blue-50 transition-colors mr-1"
+        >
+          <Pencil className="w-4 h-4" />
+        </button>
+        {editando && (
+          <EditarMovimientoDialog
+            movimiento={m}
+            moneda={moneda}
+            titulares={titulares}
+            onClose={() => setEditando(false)}
+          />
+        )}
         <button
           onClick={handleDelete}
           disabled={deleting}
