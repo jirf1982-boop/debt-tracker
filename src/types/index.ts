@@ -8,6 +8,35 @@ export type TipoMovimiento =
   | 'RETIRO_DUENO'
   | 'CREDITO_DUENO'
   | 'INTERES_PRESTAMO_100K'
+  | 'CONDONACION_PERSONAL'
+  | 'CONDONACION_NEGOCIO'
+
+/**
+ * FUENTE ÚNICA de los tipos de movimiento y su agrupación en los selectores.
+ * Los formularios, los filtros y la validación Zod se derivan de aquí:
+ * si se duplica esta lista a mano, un tipo nuevo desaparece en silencio de
+ * alguna pantalla (ya pasó una vez con el grupo "Dueño").
+ */
+export const TIPO_OPTIONS: { value: TipoMovimiento; group: string }[] = [
+  { value: 'RETIRO_PERSONAL', group: 'Retiros' },
+  { value: 'RETIRO_NEGOCIO', group: 'Retiros' },
+  { value: 'ABONO_PERSONAL', group: 'Abonos' },
+  { value: 'ABONO_NEGOCIO', group: 'Abonos' },
+  { value: 'FEE_BANCARIO', group: 'Cuenta' },
+  { value: 'ABONO_INTERES', group: 'Cuenta' },
+  { value: 'RETIRO_DUENO', group: 'Titulares' },
+  { value: 'CREDITO_DUENO', group: 'Titulares' },
+  { value: 'INTERES_PRESTAMO_100K', group: 'Préstamo' },
+  { value: 'CONDONACION_PERSONAL', group: 'Perdón de deuda (sin dinero)' },
+  { value: 'CONDONACION_NEGOCIO', group: 'Perdón de deuda (sin dinero)' },
+]
+
+export const TIPOS_MOVIMIENTO = TIPO_OPTIONS.map((o) => o.value) as [
+  TipoMovimiento,
+  ...TipoMovimiento[],
+]
+
+export const GRUPOS_TIPO = [...new Set(TIPO_OPTIONS.map((o) => o.group))]
 
 export interface Movimiento {
   id: number
@@ -55,7 +84,18 @@ export const TIPO_LABELS: Record<TipoMovimiento, string> = {
   RETIRO_DUENO: 'Retiro de titular',
   CREDITO_DUENO: 'Depósito de titular',
   INTERES_PRESTAMO_100K: 'Interés Préstamo 100K',
+  CONDONACION_PERSONAL: 'Perdón de deuda personal',
+  CONDONACION_NEGOCIO: 'Perdón de deuda negocio',
 }
+
+/**
+ * Bajan la deuda pero NO mueven el balance de la cuenta: el acreedor perdona
+ * el pago, así que nunca entró dinero al banco.
+ */
+export const TIPOS_SIN_EFECTO_EN_CUENTA: TipoMovimiento[] = [
+  'CONDONACION_PERSONAL',
+  'CONDONACION_NEGOCIO',
+]
 
 export const TIPOS_NEGATIVOS: TipoMovimiento[] = [
   'RETIRO_PERSONAL',

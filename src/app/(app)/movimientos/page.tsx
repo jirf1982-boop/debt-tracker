@@ -5,21 +5,12 @@ import { MovimientosTable } from '@/components/movimientos/MovimientosTable'
 import { FiltroBar } from '@/components/movimientos/FiltroBar'
 import { PlusCircle, ChevronLeft, ChevronRight } from 'lucide-react'
 import { obtenerTodosTitulares } from '@/lib/balance-titular'
+import { TIPOS_MOVIMIENTO } from '@/types'
 import type { TipoMovimiento } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
-const VALID_TIPOS = new Set([
-  'RETIRO_PERSONAL',
-  'RETIRO_NEGOCIO',
-  'ABONO_PERSONAL',
-  'ABONO_NEGOCIO',
-  'FEE_BANCARIO',
-  'ABONO_INTERES',
-  'RETIRO_DUENO',
-  'CREDITO_DUENO',
-  'INTERES_PRESTAMO_100K',
-])
+const VALID_TIPOS = new Set<string>(TIPOS_MOVIMIENTO)
 
 interface PageProps {
   searchParams: Promise<{

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Trash2, Loader2, Pencil } from 'lucide-react'
 import { formatCurrency, formatDate, cn } from '@/lib/utils'
-import { TIPO_LABELS, TIPOS_NEGATIVOS } from '@/types'
+import { TIPO_LABELS, TIPOS_NEGATIVOS, TIPOS_SIN_EFECTO_EN_CUENTA } from '@/types'
 import type { Movimiento, BalanceTitular } from '@/types'
 import { EditarMovimientoDialog } from './EditarMovimientoDialog'
 
@@ -21,6 +21,7 @@ export function MovimientoRow({ movimiento: m, moneda, titulares }: MovimientoRo
   const [confirm, setConfirm] = useState(false)
   const [editando, setEditando] = useState(false)
 
+  const sinEfectoEnCuenta = TIPOS_SIN_EFECTO_EN_CUENTA.includes(m.tipo)
   const isNegativo = TIPOS_NEGATIVOS.includes(m.tipo)
 
   async function handleDelete() {
@@ -56,9 +57,11 @@ export function MovimientoRow({ movimiento: m, moneda, titulares }: MovimientoRo
         <span
           className={cn(
             'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
-            isNegativo
-              ? 'bg-red-50 text-red-700'
-              : 'bg-green-50 text-green-700'
+            sinEfectoEnCuenta
+              ? 'bg-zinc-100 text-zinc-700'
+              : isNegativo
+                ? 'bg-red-50 text-red-700'
+                : 'bg-green-50 text-green-700'
           )}
         >
           {TIPO_LABELS[m.tipo]}
@@ -71,10 +74,16 @@ export function MovimientoRow({ movimiento: m, moneda, titulares }: MovimientoRo
         <span
           className={cn(
             'font-mono font-medium text-sm',
-            isNegativo ? 'text-[#DC2626]' : 'text-[#16A34A]'
+            sinEfectoEnCuenta
+              ? 'text-[#71717A]'
+              : isNegativo
+                ? 'text-[#DC2626]'
+                : 'text-[#16A34A]'
           )}
+          title={sinEfectoEnCuenta ? 'Baja la deuda; no entra dinero al banco' : undefined}
         >
-          {isNegativo ? '-' : '+'}{formatCurrency(m.monto, moneda)}
+          {sinEfectoEnCuenta ? '' : isNegativo ? '-' : '+'}
+          {formatCurrency(m.monto, moneda)}
         </span>
       </td>
       <td className="px-4 py-3 text-sm text-[#71717A] max-w-[200px] truncate">

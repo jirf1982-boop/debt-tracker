@@ -6,22 +6,12 @@ import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
-import { TIPO_LABELS } from '@/types'
-import type { TipoMovimiento, BalanceTitular } from '@/types'
+import { TIPO_LABELS, TIPO_OPTIONS, TIPOS_MOVIMIENTO, GRUPOS_TIPO } from '@/types'
+import type { BalanceTitular } from '@/types'
 import { formatDateInput, formatCurrency } from '@/lib/utils'
 
 const schema = z.object({
-  tipo: z.enum([
-    'RETIRO_PERSONAL',
-    'RETIRO_NEGOCIO',
-    'ABONO_PERSONAL',
-    'ABONO_NEGOCIO',
-    'FEE_BANCARIO',
-    'ABONO_INTERES',
-    'RETIRO_DUENO',
-    'CREDITO_DUENO',
-    'INTERES_PRESTAMO_100K',
-  ] as const),
+  tipo: z.enum(TIPOS_MOVIMIENTO),
   monto: z
     .string()
     .min(1, 'Ingresa un monto')
@@ -34,22 +24,6 @@ const schema = z.object({
 })
 
 type FormData = z.infer<typeof schema>
-
-const TIPO_OPTIONS: { value: TipoMovimiento; label: string; group: string }[] = [
-  { value: 'RETIRO_PERSONAL', label: TIPO_LABELS.RETIRO_PERSONAL, group: 'Retiros' },
-  { value: 'RETIRO_NEGOCIO', label: TIPO_LABELS.RETIRO_NEGOCIO, group: 'Retiros' },
-  { value: 'ABONO_PERSONAL', label: TIPO_LABELS.ABONO_PERSONAL, group: 'Abonos' },
-  { value: 'ABONO_NEGOCIO', label: TIPO_LABELS.ABONO_NEGOCIO, group: 'Abonos' },
-  { value: 'FEE_BANCARIO', label: TIPO_LABELS.FEE_BANCARIO, group: 'Cuenta' },
-  { value: 'ABONO_INTERES', label: TIPO_LABELS.ABONO_INTERES, group: 'Cuenta' },
-  { value: 'RETIRO_DUENO', label: TIPO_LABELS.RETIRO_DUENO, group: 'Titulares' },
-  { value: 'CREDITO_DUENO', label: TIPO_LABELS.CREDITO_DUENO, group: 'Titulares' },
-  { value: 'INTERES_PRESTAMO_100K', label: TIPO_LABELS.INTERES_PRESTAMO_100K, group: 'Préstamo' },
-]
-
-// Derivado de TIPO_OPTIONS a propósito: si se escribe a mano, un grupo
-// renombrado deja su encabezado vacío y las opciones desaparecen del select.
-const GRUPOS = [...new Set(TIPO_OPTIONS.map((o) => o.group))]
 
 export function NuevoMovimientoForm({ titulares = [] }: { titulares?: BalanceTitular[] }) {
   const router = useRouter()
@@ -112,11 +86,11 @@ export function NuevoMovimientoForm({ titulares = [] }: { titulares?: BalanceTit
             className="w-full px-3 py-2 border border-[#E4E4E7] rounded-lg text-[#09090B] bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors text-sm"
           >
             <option value="">Selecciona un tipo</option>
-            {GRUPOS.map((group) => (
+            {GRUPOS_TIPO.map((group) => (
               <optgroup key={group} label={group}>
                 {TIPO_OPTIONS.filter((o) => o.group === group).map((o) => (
                   <option key={o.value} value={o.value}>
-                    {o.label}
+                    {TIPO_LABELS[o.value]}
                   </option>
                 ))}
               </optgroup>

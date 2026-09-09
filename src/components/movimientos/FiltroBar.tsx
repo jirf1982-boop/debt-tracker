@@ -2,20 +2,10 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
-import { TIPO_LABELS } from '@/types'
-import type { TipoMovimiento } from '@/types'
+import { TIPO_LABELS, TIPOS_MOVIMIENTO } from '@/types'
 import { X } from 'lucide-react'
 
-const TODOS_LOS_TIPOS: TipoMovimiento[] = [
-  'RETIRO_PERSONAL',
-  'RETIRO_NEGOCIO',
-  'ABONO_PERSONAL',
-  'ABONO_NEGOCIO',
-  'FEE_BANCARIO',
-  'ABONO_INTERES',
-  'RETIRO_DUENO',
-  'CREDITO_DUENO',
-]
+const TODOS_LOS_TIPOS = TIPOS_MOVIMIENTO
 
 export function FiltroBar() {
   const router = useRouter()

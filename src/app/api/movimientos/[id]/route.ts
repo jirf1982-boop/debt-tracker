@@ -3,18 +3,9 @@ import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { getSession } from '@/lib/auth'
 import { resolverTitular } from '@/lib/movimiento-edicion'
+import { TIPOS_MOVIMIENTO } from '@/types'
 
-const TipoMovimientoSchema = z.enum([
-  'RETIRO_PERSONAL',
-  'RETIRO_NEGOCIO',
-  'ABONO_PERSONAL',
-  'ABONO_NEGOCIO',
-  'FEE_BANCARIO',
-  'ABONO_INTERES',
-  'RETIRO_DUENO',
-  'CREDITO_DUENO',
-  'INTERES_PRESTAMO_100K',
-])
+const TipoMovimientoSchema = z.enum(TIPOS_MOVIMIENTO)
 
 const EditarMovimientoSchema = z
   .object({

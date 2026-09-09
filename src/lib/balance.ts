@@ -65,6 +65,14 @@ export async function calcularBalance(): Promise<BalanceData> {
         sumNegativos += monto
         sumRetiroDueno += monto
         break
+      // Perdón de deuda: el acreedor cancela el pago. Baja la deuda y NO
+      // toca el balance de la cuenta, porque nunca entró dinero al banco.
+      case 'CONDONACION_PERSONAL':
+        sumAbonoPersonal += monto
+        break
+      case 'CONDONACION_NEGOCIO':
+        sumAbonoNegocio += monto
+        break
     }
   }
 

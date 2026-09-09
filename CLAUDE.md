@@ -86,8 +86,21 @@ enum TipoMovimiento {
   RETIRO_DUENO           // − balance (no afecta deuda)
   CREDITO_DUENO          // + balance (no afecta deuda)
   INTERES_PRESTAMO_100K  // + balance, − deuda personal
+  CONDONACION_PERSONAL   // − deuda personal, NO toca balance
+  CONDONACION_NEGOCIO    // − deuda negocio, NO toca balance
 }
 ```
+
+Los dos CONDONACION son el caso "mi mamá me perdona el pago": baja la deuda
+sin que entre dinero al banco. Registrarlo como ABONO_* inflaría
+`balance_cuenta`, que debe cuadrar con el estado de cuenta real.
+
+**La lista de tipos vive en UN solo lugar**: `TIPO_OPTIONS` en
+`src/types/index.ts`. De ahí se derivan `TIPOS_MOVIMIENTO`, `GRUPOS_TIPO`,
+los selectores de los formularios, el filtro del historial y los enums de
+Zod en las rutas del API. NO duplicar la lista a mano: cuando se duplicó, un
+grupo renombrado dejó opciones invisibles en el formulario y el build pasó
+sin avisar.
 
 ## ADVERTENCIAS de base de datos
 

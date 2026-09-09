@@ -4,23 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2, X } from 'lucide-react'
-import { TIPO_LABELS } from '@/types'
+import { TIPO_LABELS, TIPO_OPTIONS, GRUPOS_TIPO } from '@/types'
 import type { Movimiento, TipoMovimiento, BalanceTitular } from '@/types'
 import { formatCurrency, formatDateInput } from '@/lib/utils'
-
-const TIPO_OPTIONS: { value: TipoMovimiento; group: string }[] = [
-  { value: 'RETIRO_PERSONAL', group: 'Retiros' },
-  { value: 'RETIRO_NEGOCIO', group: 'Retiros' },
-  { value: 'ABONO_PERSONAL', group: 'Abonos' },
-  { value: 'ABONO_NEGOCIO', group: 'Abonos' },
-  { value: 'FEE_BANCARIO', group: 'Cuenta' },
-  { value: 'ABONO_INTERES', group: 'Cuenta' },
-  { value: 'RETIRO_DUENO', group: 'Titulares' },
-  { value: 'CREDITO_DUENO', group: 'Titulares' },
-  { value: 'INTERES_PRESTAMO_100K', group: 'Préstamo' },
-]
-
-const GRUPOS = [...new Set(TIPO_OPTIONS.map((o) => o.group))]
 
 interface Props {
   movimiento: Movimiento
@@ -124,7 +110,7 @@ export function EditarMovimientoDialog({ movimiento: m, moneda, titulares, onClo
               onChange={(e) => setTipo(e.target.value as TipoMovimiento)}
               className={inputClass}
             >
-              {GRUPOS.map((g) => (
+              {GRUPOS_TIPO.map((g) => (
                 <optgroup key={g} label={g}>
                   {TIPO_OPTIONS.filter((o) => o.group === g).map((o) => (
                     <option key={o.value} value={o.value}>

@@ -22,7 +22,9 @@
       "Bash(git push *)",
       "Bash(curl -s https://debt-tracker-inky.vercel.app/nuevo -o /dev/null -w \"%{http_code}\")",
       "Bash(python3 -)",
-      "Bash(git commit -q -m 'Editar movimientos desde el historial *)"
+      "Bash(git commit -q -m 'Editar movimientos desde el historial *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X PATCH -H \"Content-Type: application/json\" -d '{}' https://debt-tracker-inky.vercel.app/api/movimientos/999999)",
+      "Bash(git commit -q -m 'Perdón de deuda: baja la deuda sin mover el balance del banco *)"
     ]
   }
 }
