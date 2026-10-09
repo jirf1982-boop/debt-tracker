@@ -1,7 +1,13 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { BalanceNino, MovimientoNino, Nino, TIPO_MOVIMIENTO_NINO_LABELS } from '@/types'
+import {
+  BalanceNino,
+  EFECTO_MOVIMIENTO_NINO,
+  MovimientoNino,
+  Nino,
+  TIPO_MOVIMIENTO_NINO_LABELS,
+} from '@/types'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { NuevoMovimientoNinoForm } from './NuevoMovimientoNinoForm'
@@ -104,8 +110,8 @@ export function NinoDetailView({
 
         <div className="bg-white p-4 rounded-lg border border-[#E4E4E7]">
           <p className="text-xs text-[#71717A] mb-1">Retiros Niño</p>
-          <p className="text-lg font-semibold text-red-600">
-            +${parseFloat(balanceState.retiros_nino).toFixed(2)}
+          <p className="text-lg font-semibold text-green-600">
+            -${parseFloat(balanceState.retiros_nino).toFixed(2)}
           </p>
         </div>
 
@@ -166,10 +172,13 @@ export function NinoDetailView({
                         className="text-sm font-semibold"
                         style={{
                           color:
-                            mov.tipo === 'PAGO_PADRE' ? '#10B981' : '#EF4444',
+                            EFECTO_MOVIMIENTO_NINO[mov.tipo].signo === -1
+                              ? '#10B981'
+                              : '#EF4444',
                         }}
+                        title={EFECTO_MOVIMIENTO_NINO[mov.tipo].explicacion}
                       >
-                        {mov.tipo === 'PAGO_PADRE' ? '-' : '+'}$
+                        {EFECTO_MOVIMIENTO_NINO[mov.tipo].signo === -1 ? '-' : '+'}$
                         {parseFloat(mov.monto).toFixed(2)}
                       </p>
 

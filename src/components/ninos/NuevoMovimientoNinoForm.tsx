@@ -4,7 +4,12 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { BalanceNino, MovimientoNino, TIPO_MOVIMIENTO_NINO_LABELS } from '@/types'
+import {
+  BalanceNino,
+  EFECTO_MOVIMIENTO_NINO,
+  MovimientoNino,
+  TIPO_MOVIMIENTO_NINO_LABELS,
+} from '@/types'
 import { format } from 'date-fns'
 
 const FormSchema = z.object({
@@ -35,6 +40,7 @@ export function NuevoMovimientoNinoForm({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
@@ -110,6 +116,9 @@ export function NuevoMovimientoNinoForm({
               {errors.tipo.message}
             </p>
           )}
+          <p className="text-xs text-[#71717A] mt-1.5">
+            {EFECTO_MOVIMIENTO_NINO[watch('tipo')]?.explicacion}
+          </p>
         </div>
 
         <div>

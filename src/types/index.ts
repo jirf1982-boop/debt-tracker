@@ -169,3 +169,24 @@ export const TIPO_MOVIMIENTO_NINO_LABELS: Record<TipoMovimientoNino, string> = {
   RETIRO_NINO: 'Retiro del Niño',
   REGALO_DINERO: 'Regalo/Dinero Adicional',
 }
+
+/**
+ * FUENTE ÚNICA del efecto de cada movimiento sobre la deuda con el hijo.
+ * `signo` lo usa el cálculo (lib/balance-nino.ts) Y la interfaz para el color
+ * y el signo que muestra. No duplicar: el bug original fue que la fórmula
+ * sumaba los retiros mientras la pantalla los pintaba en rojo con "+", las
+ * dos equivocadas por separado y sin forma de notarlo.
+ *
+ * La deuda es lo que Julie le debe al hijo (dinero de él que ella guarda):
+ *  - le paga            → ya le entregó ese dinero  → debe MENOS
+ *  - el hijo retira     → él agarró su propio dinero → debe MENOS
+ *  - el hijo recibe más → ella guarda más de él      → debe MÁS
+ */
+export const EFECTO_MOVIMIENTO_NINO: Record<
+  TipoMovimientoNino,
+  { signo: -1 | 1; explicacion: string }
+> = {
+  PAGO_PADRE: { signo: -1, explicacion: 'Baja la deuda: le pagaste ese dinero.' },
+  RETIRO_NINO: { signo: -1, explicacion: 'Baja la deuda: él agarró dinero suyo que tú le guardabas.' },
+  REGALO_DINERO: { signo: 1, explicacion: 'Sube la deuda: recibió más dinero que tú le guardas.' },
+}

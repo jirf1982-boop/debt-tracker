@@ -66,7 +66,15 @@ Client Components: react-hook-form + Zod, POST al API, `router.refresh()`.
 
 - `Config` — balance_inicial, nombre_acreedor, moneda
 - `Movimiento` — tipo (enum TipoMovimiento, 9 valores), monto Decimal, fecha, nota
-- `Nino` / `MovimientoNino` — tipo (PAGO_PADRE, RETIRO_NINO, REGALO_DINERO)
+- `Nino` / `MovimientoNino` — deuda que Julie le debe a cada hijo (dinero de
+  ellos que ella guarda). COMPLETAMENTE separada de la deuda principal y con
+  su propio historial (requisito explícito de Julie). El efecto de cada tipo
+  sobre la deuda está declarado UNA sola vez en `EFECTO_MOVIMIENTO_NINO`
+  (`src/types/index.ts`), de donde lo leen el cálculo y la interfaz:
+  PAGO_PADRE baja (le pagaste), RETIRO_NINO baja (él agarró su dinero),
+  REGALO_DINERO sube (recibió más dinero que tú le guardas). Antes el
+  cálculo sumaba los retiros y la pantalla los pintaba en rojo con "+",
+  las dos equivocadas por separado.
 - `Titular` — personas dueñas de una parte del dinero de la cuenta (mamá,
   hermanos): nombre, monto_inicial. `Movimiento.titularId` es opcional y solo
   aplica a RETIRO_DUENO / CREDITO_DUENO. Un retiro de titular baja el balance
